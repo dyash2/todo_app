@@ -21,5 +21,14 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
     color: Colors.black45,
   );
-
+  static TextStyle dialogtitle = GoogleFonts.poppins(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+  static TextStyle cardTitle = GoogleFonts.poppins(
+    fontSize: 14,
+    color: Colors.white,
+    fontWeight: FontWeight.w600,
+  );
 }

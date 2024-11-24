@@ -1,4 +1,4 @@
-# todo_app
+# foldit
 
 A new Flutter project.
 
