@@ -2,6 +2,30 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static const Color bgColor = Color(0xffece8e1);
+
+  static ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.blue,
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.blue,
+    ),
+    textTheme: const TextTheme(
+      displayMedium: TextStyle(color: Colors.black),
+    ),
+  );
+
+  static ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Colors.blueGrey,
+    scaffoldBackgroundColor: Colors.black,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.blueGrey,
+    ),
+    textTheme: const TextTheme(
+      displayMedium: TextStyle(color: Colors.white),
+    ),
+  );
 }
 
 class AppCardTheme {

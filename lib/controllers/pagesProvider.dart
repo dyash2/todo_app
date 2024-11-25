@@ -22,7 +22,7 @@ class PagesProvider extends ChangeNotifier {
 
   // Add new image with an empty title
   Future<void> addImage(String path, String title) async {
-    _images.add({'path': path, 'title': title});  // Empty title by default
+    _images.add({'path': path, 'title': title}); // Empty title by default
     await _saveToPreferences();
     notifyListeners();
   }
@@ -44,6 +44,14 @@ class PagesProvider extends ChangeNotifier {
   Future<void> removeImage(int index) async {
     _images.removeAt(index);
     await _saveToPreferences();
+    notifyListeners();
+  }
+
+  // Move image and save new order
+  Future<void> moveImage(int oldIndex, int newIndex) async {
+    final image = _images.removeAt(oldIndex);
+    _images.insert(newIndex, image);
+    await _saveToPreferences(); // Save the updated order to SharedPreferences
     notifyListeners();
   }
 }

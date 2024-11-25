@@ -31,7 +31,6 @@ class _PagesState extends State<Pages> {
     super.didChangeDependencies();
     final images = context.read<PagesProvider>().images;
 
-    // Check if _controllers needs to be updated
     if (_controllers.length != images.length) {
       _controllers = List.generate(
         images.length,
@@ -73,7 +72,7 @@ class _PagesState extends State<Pages> {
                   style: AppTextStyles.subtitle,
                 ),
               )
-            : ListView.builder(
+            : ReorderableListView.builder(
                 padding: const EdgeInsets.all(10),
                 itemCount: images.length,
                 itemBuilder: (context, index) {
@@ -114,9 +113,7 @@ class _PagesState extends State<Pages> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: TextFormField(
-                              controller: _controllers.isNotEmpty
-                                  ? _controllers[index]
-                                  : null,
+                              controller: _controllers[index],
                               decoration: const InputDecoration(
                                 hintText: 'Enter title here',
                                 border: InputBorder.none,
@@ -138,6 +135,21 @@ class _PagesState extends State<Pages> {
                     ),
                   );
                 },
+                onReorder: (int oldIndex, int newIndex) async {
+                  if (newIndex > oldIndex) {
+                    newIndex -= 1;
+                  }
+
+                  await context
+                      .read<PagesProvider>()
+                      .moveImage(oldIndex, newIndex);
+
+                  setState(() {
+                    // Update controllers to reflect the new order
+                    final movedController = _controllers.removeAt(oldIndex);
+                    _controllers.insert(newIndex, movedController);
+                  });
+                },
               ),
       ),
     );
@@ -145,7 +157,6 @@ class _PagesState extends State<Pages> {
 
   @override
   void dispose() {
-    // Dispose controllers properly
     for (var controller in _controllers) {
       controller.dispose();
     }

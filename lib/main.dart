@@ -4,12 +4,13 @@ import 'package:foldit/controllers/folder_Provider.dart';
 import 'package:foldit/controllers/pagesProvider.dart';
 import 'package:foldit/screens/home_screen.dart';
 import 'controllers/titleProvider.dart';
+
 void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => TitleProvider()),
       ChangeNotifierProvider(create: (_) => FolderProvider()),
-      ChangeNotifierProvider(create: (_)=> PagesProvider()),
+      ChangeNotifierProvider(create: (_) => PagesProvider()),
     ],
     child: const MyApp(),
   ));
@@ -20,13 +21,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       home: HomeScreen(),
     );
   }

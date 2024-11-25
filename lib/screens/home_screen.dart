@@ -1,10 +1,7 @@
 import 'dart:io';
-import 'dart:developer' as l;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:foldit/controllers/titleProvider.dart';
 import 'package:foldit/screens/folders/pages.dart';
@@ -159,6 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return shouldExit ?? false;
   }
+
 
   @override
   Widget build(BuildContext context) {
