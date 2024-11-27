@@ -46,4 +46,30 @@ class FolderProvider with ChangeNotifier {
     saveFolders();
     notifyListeners();
   }
+
+  void updateFolderTitle(int index, String title) {
+    if (index >= 0 && index < _folders.length) {
+      _folders[index]['title'] = title;
+      l.log("Updated folder title: ${json.encode(_folders[index])}");
+      saveFolders();
+      notifyListeners();
+    } else {
+      l.log("Invalid index for updating folder title.");
+    }
+  }
+
+  void updateFolder(int index, String title, String description, String date) {
+    if (index >= 0 && index < _folders.length) {
+      _folders[index] = {
+        "title": title,
+        "description": description,
+        "date": date,
+      };
+      l.log("Updated folder: ${json.encode(_folders[index])}");
+      saveFolders();
+      notifyListeners();
+    } else {
+      l.log("Invalid index for updating folder.");
+    }
+  }
 }

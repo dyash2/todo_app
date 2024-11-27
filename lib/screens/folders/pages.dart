@@ -65,92 +65,92 @@ class _PagesState extends State<Pages> {
       ),
       body: Container(
         color: AppTheme.bgColor,
-        child: images.isEmpty
-            ? Center(
-                child: Text(
-                  "No images available.",
-                  style: AppTextStyles.subtitle,
-                ),
-              )
-            : ReorderableListView.builder(
-                padding: const EdgeInsets.all(10),
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  final image = images[index];
+        child: Consumer<PagesProvider>(builder: (context, watch, _) {
+          return watch.images.isEmpty
+              ? Center(
+                  child: Text(
+                    "No images available.",
+                    style: AppTextStyles.subtitle,
+                  ),
+                )
+              : ReorderableListView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: watch.images.length,
+                  itemBuilder: (context, index) {
+                    final image = watch.images[index];
+                    final tag = 'folder-${image["title"] ?? index}';
 
-                  return Dismissible(
-                    key: ValueKey(index),
-                    direction: DismissDirection.startToEnd,
-                    onDismissed: (direction) {
-                      context.read<PagesProvider>().removeImage(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red,
-                          content: Text("${image["title"]} deleted"),
-                        ),
-                      );
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: const Icon(Icons.delete, color: Colors.white),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                    return Dismissible(
+                      key: ValueKey(image.entries.first.value),
+                      direction: DismissDirection.startToEnd,
+                      onDismissed: (direction) {
+                        context.read<PagesProvider>().removeImage(index);
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     backgroundColor: Colors.red,
+                        //     content: Text("${image["title"]} deleted"),
+                        //   ),
+                        // );
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Image.file(
-                            File(image['path']!),
-                            fit: BoxFit.cover,
+                      child: Hero(
+                        tag: tag,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextFormField(
-                              controller: _controllers[index],
-                              decoration: const InputDecoration(
-                                hintText: 'Enter title here',
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Image.file(
+                                File(image['path']!),
+                                fit: BoxFit.cover,
                               ),
-                              style: AppTextStyles.subtitle,
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                context
-                                    .read<PagesProvider>()
-                                    .updateImageTitle(index, value);
-                              },
-                            ),
+                              const SizedBox(height: 10),
+                              TextFormField(
+                                controller: _controllers[index],
+                                decoration: InputDecoration(
+                                  hintText: 'Enter title here',
+                                  hintStyle: AppTextStyles.subtitle,
+                                  border: InputBorder.none,
+                                ),
+                                style: AppTextStyles.title,
+                                textAlign: TextAlign.center,
+                                onChanged: (value) {
+                                  context
+                                      .read<PagesProvider>()
+                                      .updateImageTitle(index, value);
+                                },
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-                onReorder: (int oldIndex, int newIndex) async {
-                  if (newIndex > oldIndex) {
-                    newIndex -= 1;
-                  }
+                    );
+                  },
+                  onReorder: (int oldIndex, int newIndex) async {
+                    if (newIndex > oldIndex) {
+                      newIndex -= 1;
+                    }
 
-                  await context
-                      .read<PagesProvider>()
-                      .moveImage(oldIndex, newIndex);
+                    await context
+                        .read<PagesProvider>()
+                        .moveImage(oldIndex, newIndex);
 
-                  setState(() {
-                    // Update controllers to reflect the new order
-                    final movedController = _controllers.removeAt(oldIndex);
-                    _controllers.insert(newIndex, movedController);
-                  });
-                },
-              ),
+                    setState(() {
+                      final movedController = _controllers.removeAt(oldIndex);
+                      _controllers.insert(newIndex, movedController);
+                    });
+                  },
+                );
+        }),
       ),
     );
   }

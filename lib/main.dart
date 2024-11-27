@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:foldit/controllers/folder_Provider.dart';
+import 'package:foldit/controllers/folderProvider.dart';
 import 'package:foldit/controllers/pagesProvider.dart';
 import 'package:foldit/screens/home_screen.dart';
 import 'controllers/titleProvider.dart';
